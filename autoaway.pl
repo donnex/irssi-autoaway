@@ -96,7 +96,7 @@ sub auto_timeout {
 
 sub reset_timer {
     my ($cmd) = @_;
-    return if ($cmd =~ /^\/(\^(NOTICE|WHOIS) |AWAY)/i || $cmd =~ /^\/.+(auth|invite).+/i);
+    return if ($cmd =~ /^\/(\^?NOTICE|WHOIS|AWAY)/i || $cmd =~ /^\/.+(auth|invite).+/i);
 
     if ($autoaway_state == USER_AWAY_AUTOAWAY) {
         $autoaway_state = USER_AWAY_PROCESSING;
@@ -149,6 +149,8 @@ if (!$autoaway_timeout) {
 # Make sure we're not away when setting up the timers
 do_command('/AWAY');
 $autoaway_state = USER_NOT_AWAY;
+
+setup_timer();
 
 Irssi::command_bind('autoaway', 'cmd_autoaway');
 Irssi::command_bind('away', 'cmd_away');
